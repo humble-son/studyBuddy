@@ -69,7 +69,7 @@ export default function RootLayout({
         </header>
         {children}
         <footer>
-          <div className="text-sm text-muted-foreground flex justify-center items-center border-t border-border text-white bg-blue-800 h-12">
+          <div className="text-sm text-muted-foreground flex justify-center items-center border-t border-border text-white bg-blue-800 h-24">
             <p>
               &copy; {new Date().getFullYear()} StudyBuddy AI. All rights
               reserved.
