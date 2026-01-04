@@ -29,8 +29,6 @@ export async function fetchYouTubeVideos(
       },
     });
 
-    console.log("YouTube API response data:", data);
-
     if (data.items && data.items.length > 0) {
       const video = data.items[0];
 

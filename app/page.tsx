@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { InputZone } from "@/components/input-zone";
 import { SolutionDashboard } from "@/components/solution-dashboard";
-import { Sparkles } from "lucide-react";
 import apiClient from "@/lib/auth";
 import {
   Card,
