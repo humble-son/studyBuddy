@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   title: "StudyBuddy AI - Your Intelligent Homework Assistant",
   description:
     "Get step-by-step solutions and explanations for your homework questions with AI-powered learning",
-  generator: "v0.app",
   icons: {
     icon: [
       {
