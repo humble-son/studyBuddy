@@ -12,7 +12,7 @@ export interface YouTubeVideo {
   thumbnailUrl: string;
 }
 
-const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API;
 const YOUTUBE_API_URL = process.env.NEXT_PUBLIC_YOUTUBE_SEARCH_URL;
 
 export async function fetchYouTubeVideos(
