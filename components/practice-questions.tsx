@@ -36,7 +36,9 @@ export function PracticeQuestions({ answer }: { answer: Answer }) {
                   </span>
                   <div className="flex-1 w-64 overflow-x-auto max-w-full">
                     <p className="text-sm font-medium text-foreground whitespace-pre-wrap">
-                      <Latex>{q.question.replaceAll("**", "")}</Latex>
+                      <Latex>
+                        {q.question.replaceAll("**", "").replaceAll("*", "")}
+                      </Latex>
                     </p>
                   </div>
                 </div>
@@ -46,7 +48,9 @@ export function PracticeQuestions({ answer }: { answer: Answer }) {
                   {q.answer.steps.map((step, stepIndex) => (
                     <div key={stepIndex} className="">
                       <p className=" p-4 my-2 bg-secondary rounded-lg text-secondary-foreground text-sm leading-relaxed whitespace-pre-wrap">
-                        <Latex>{step.replaceAll("**", "")}</Latex>
+                        <Latex>
+                          {step.replaceAll("**", "").replaceAll("*", "")}
+                        </Latex>
                       </p>
                     </div>
                   ))}

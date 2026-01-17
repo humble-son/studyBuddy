@@ -21,7 +21,7 @@ export function SolutionContent({
   question: string;
 }) {
   const [copied, setCopied] = useState(false);
-
+  console.log(answer);
   const solutionText =
     answer.main_solution.steps.join("\n") +
     "\nFinal Answer: " +
