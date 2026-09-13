@@ -3,11 +3,14 @@
 import { fetchYouTubeVideos, YouTubeVideo } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-interface props {
+interface Props {
   search_query: string;
   fallback_title: string;
 }
-const videoRecommendation = ({ search_query, fallback_title }: props) => {
+const videoRecommendation = ({
+  search_query,
+  fallback_title,
+}: Readonly<Props>) => {
   const [video, setVideo] = useState<YouTubeVideo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +53,7 @@ const videoRecommendation = ({ search_query, fallback_title }: props) => {
         </p>
         <a
           href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
-            search_query
+            search_query,
           )}`}
           target="_blank"
           className="text-indigo-600 hover:underline text-xs mt-2 block"
