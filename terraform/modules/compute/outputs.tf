@@ -1,16 +1,8 @@
-# --------------------------------------------------
-# General
-# --------------------------------------------------
-
 output "project_name" {
   description = "Name of the project."
 
   value = var.project_name
 }
-
-# --------------------------------------------------
-# ECR
-# --------------------------------------------------
 
 output "ecr_repository_name" {
   description = "Name of the ECR repository."
@@ -36,10 +28,6 @@ output "ecr_registry_id" {
   value = aws_ecr_repository.ecr_repo.registry_id
 }
 
-# --------------------------------------------------
-# ECS Cluster
-# --------------------------------------------------
-
 output "ecs_cluster_name" {
   description = "Name of the ECS cluster."
 
@@ -52,10 +40,6 @@ output "ecs_cluster_arn" {
   value = aws_ecs_cluster.main.arn
 }
 
-# --------------------------------------------------
-# ECS Task Definition
-# --------------------------------------------------
-
 output "ecs_task_definition_family" {
   description = "Family name of the ECS task definition."
 
@@ -67,10 +51,6 @@ output "ecs_task_definition_arn" {
 
   value = aws_ecs_task_definition.studybuddy.arn
 }
-
-# --------------------------------------------------
-# ECS Service
-# --------------------------------------------------
 
 output "ecs_service_name" {
   description = "Name of the ECS service."
@@ -89,10 +69,6 @@ output "ecs_desired_count" {
 
   value = aws_ecs_service.nextjs.desired_count
 }
-
-# --------------------------------------------------
-# Application Load Balancer
-# --------------------------------------------------
 
 output "alb_name" {
   description = "Name of the Application Load Balancer."
@@ -118,10 +94,6 @@ output "application_url" {
   value = "http://${aws_lb.lb.dns_name}"
 }
 
-# --------------------------------------------------
-# Target Group
-# --------------------------------------------------
-
 output "target_group_arn" {
   description = "ARN of the ECS target group."
 
@@ -133,10 +105,6 @@ output "target_group_name" {
 
   value = aws_lb_target_group.target_group.name
 }
-
-# --------------------------------------------------
-# Security Groups
-# --------------------------------------------------
 
 output "ecs_security_group_id" {
   description = "Security group ID used by ECS tasks."
@@ -150,10 +118,6 @@ output "alb_security_group_id" {
   value = aws_security_group.ecs_lb.id
 }
 
-# --------------------------------------------------
-# CloudWatch
-# --------------------------------------------------
-
 output "cloudwatch_log_group_name" {
   description = "CloudWatch log group used by ECS."
 
@@ -165,10 +129,6 @@ output "cloudwatch_log_group_arn" {
 
   value = aws_cloudwatch_log_group.studybuddy.arn
 }
-
-# --------------------------------------------------
-# AWS Region
-# --------------------------------------------------
 
 output "aws_region" {
   description = "AWS region where the infrastructure is deployed."

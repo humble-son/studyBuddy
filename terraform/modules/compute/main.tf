@@ -1,6 +1,3 @@
-# -----------------------------------------------------------------------------
-# ECR: stores the frontend container image that GitHub Actions pushes.
-# -----------------------------------------------------------------------------
 resource "aws_ecr_repository" "ecr_repo" {
   name                 = lower(var.project_name)
   image_tag_mutability = "IMMUTABLE"
@@ -11,9 +8,6 @@ resource "aws_ecr_repository" "ecr_repo" {
   }
 }
 
-# -----------------------------------------------------------------------------
-# ECS task execution role: allows the container runtime to pull images and write logs.
-# -----------------------------------------------------------------------------
 resource "aws_iam_role" "ecs_task_execution" {
   name = "studybuddy_ecs_task_execution_role"
 
@@ -41,9 +35,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# -----------------------------------------------------------------------------
-# CloudWatch: central log destination for the Next.js container.
-# -----------------------------------------------------------------------------
 resource "aws_cloudwatch_log_group" "studybuddy" {
   name              = "studybuddy"
   retention_in_days = 30
@@ -51,9 +42,6 @@ resource "aws_cloudwatch_log_group" "studybuddy" {
 
 data "aws_region" "current" {}
 
-# -----------------------------------------------------------------------------
-# ECS task definition: defines how the application container should run.
-# -----------------------------------------------------------------------------
 resource "aws_ecs_task_definition" "studybuddy" {
   family                   = "studyBuddy"
   network_mode             = "awsvpc"
@@ -90,9 +78,6 @@ resource "aws_ecs_task_definition" "studybuddy" {
   ])
 }
 
-# -----------------------------------------------------------------------------
-# ECS cluster: logical grouping for the app service.
-# -----------------------------------------------------------------------------
 resource "aws_ecs_cluster" "main" {
   name = "studyBuddy"
 
@@ -102,9 +87,6 @@ resource "aws_ecs_cluster" "main" {
   }
 }
 
-# -----------------------------------------------------------------------------
-# Security groups: ECS tasks receive only ALB traffic on port 3000.
-# -----------------------------------------------------------------------------
 resource "aws_security_group" "ecs" {
   name        = var.ecs_security_group
   description = "Allow traffic only on port 3000 from the load balancer"
@@ -161,9 +143,6 @@ resource "aws_vpc_security_group_egress_rule" "alb_all_ipv4" {
   ip_protocol       = "-1"
 }
 
-# -----------------------------------------------------------------------------
-# Target group: routes traffic from the ALB to the ECS task on port 3000.
-# -----------------------------------------------------------------------------
 resource "aws_lb_target_group" "target_group" {
   name        = var.alb_target_group
   port        = 3000
@@ -182,9 +161,6 @@ resource "aws_lb_target_group" "target_group" {
   }
 }
 
-# -----------------------------------------------------------------------------
-# ALB: internet-facing entry point for the frontend application.
-# -----------------------------------------------------------------------------
 resource "aws_lb" "lb" {
   name               = "studybuddy-alb"
   internal           = false
@@ -194,9 +170,6 @@ resource "aws_lb" "lb" {
   subnets         = var.public_subnet_ids
 }
 
-# -----------------------------------------------------------------------------
-# HTTP listener: redirects to HTTPS when a certificate is configured.
-# -----------------------------------------------------------------------------
 resource "aws_lb_listener" "listener_http" {
   load_balancer_arn = aws_lb.lb.arn
   port              = 80
@@ -209,7 +182,7 @@ resource "aws_lb_listener" "listener_http" {
       for_each = var.certificate_arn != "" ? [1] : []
       content {
         port        = "443"
-        protocol    = "HTTPS"   
+        protocol    = "HTTPS"
         status_code = "HTTP_301"
       }
     }
@@ -231,9 +204,6 @@ resource "aws_lb_listener" "listener_https" {
   }
 }
 
-# -----------------------------------------------------------------------------
-# ECS service: keeps the frontend running behind the ALB with Fargate.
-# -----------------------------------------------------------------------------
 resource "aws_ecs_service" "nextjs" {
   name            = "studyBuddy_frontend"
   cluster         = aws_ecs_cluster.main.id
@@ -257,9 +227,6 @@ resource "aws_ecs_service" "nextjs" {
   depends_on = [aws_lb_listener.listener_http]
 }
 
-# -----------------------------------------------------------------------------
-# GitHub OIDC federation: allows GitHub Actions to assume AWS credentials.
-# -----------------------------------------------------------------------------
 resource "aws_iam_role" "github_actions" {
   name = "studybuddy_github_actions_role"
 
@@ -295,9 +262,6 @@ resource "aws_iam_role" "github_actions" {
   }
 }
 
-# -----------------------------------------------------------------------------
-# GitHub Actions permissions for pushing Docker images to ECR.
-# -----------------------------------------------------------------------------
 resource "aws_iam_policy" "github_ecr_push" {
   name        = "studybuddy_github_actions_ecr_push"
   description = "Allow GitHub Actions to push images to the studyBuddy ECR repository."
@@ -330,9 +294,6 @@ resource "aws_iam_role_policy_attachment" "github_ecr_push" {
   role       = aws_iam_role.github_actions.name
 }
 
-# -----------------------------------------------------------------------------
-# GitHub Actions permissions for updating the ECS service and task definition.
-# -----------------------------------------------------------------------------
 resource "aws_iam_policy" "github_ecs_deploy" {
   name        = "studybuddy_github_actions_ecs_deploy"
   description = "Allow GitHub Actions to deploy the studyBuddy application to ECS."
