@@ -81,7 +81,7 @@ export function SolutionContent({
           </h3>
 
           <div className="space-y-4">
-            {answer.main_solution.steps.map((elem: any, index: number) => {
+            {answer.main_solution.steps.map((elem: string, index: number) => {
               return (
                 <p
                   key={index}

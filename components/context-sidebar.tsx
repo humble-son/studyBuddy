@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lightbulb, Play } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { Answer } from "@/app/page";
 import Latex from "react-latex-next";
 
-export function ContextSidebar({ answer }: { answer: Answer }) {
+export function ContextSidebar({ answer }: Readonly<{ answer: Answer }>) {
   return (
     <div className="space-y-6 lg:sticky lg:top-6">
       <Card>
@@ -27,7 +27,7 @@ export function ContextSidebar({ answer }: { answer: Answer }) {
                 <Badge key={id} className="text-xs">
                   #{topic}
                 </Badge>
-              )
+              ),
           )}
         </CardContent>
       </Card>

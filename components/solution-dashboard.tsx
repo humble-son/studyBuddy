@@ -5,10 +5,11 @@ import { SolutionContent } from "@/components/solution-content";
 import { PracticeQuestions } from "@/components/practice-questions";
 import { ContextSidebar } from "@/components/context-sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Answer } from "@/app/page";
 
 interface SolutionDashboardProps {
   isLoading: boolean;
-  answer: any;
+  answer: Answer;
   question: string;
 }
 
@@ -16,7 +17,7 @@ export function SolutionDashboard({
   isLoading,
   answer,
   question,
-}: SolutionDashboardProps) {
+}: Readonly<SolutionDashboardProps>) {
   if (isLoading) {
     return (
       <div className="grid lg:grid-cols-[300px_1fr] gap-6">
