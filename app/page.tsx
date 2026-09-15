@@ -73,7 +73,7 @@ export default function Page() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 gap-4 grid md:grid-cols-2 lg:grid-cols-5">
-                {answer.video_search_queries.map((video, id) => {
+                {answer.video_search_queries.map((video, id: number) => {
                   return (
                     <VideoRecommendation
                       key={id}
