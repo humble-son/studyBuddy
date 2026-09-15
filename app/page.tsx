@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { AxiosError } from "axios";
 import { InputZone } from "@/components/input-zone";
 import { SolutionDashboard } from "@/components/solution-dashboard";
 import apiClient from "@/lib/auth";
@@ -36,12 +37,18 @@ export default function Page() {
     setQuestion(question);
   }
 
-  const getErrorText = (error: any) => {
-    const status = error?.response?.status;
+  const getErrorText = (error: unknown) => {
+    const axiosError = error as AxiosError<{
+      message?: string;
+      error?: string;
+    }>;
+    const status = axiosError?.response?.status;
+    const responseData = axiosError?.response?.data;
     const backendMessage =
-      error?.response?.data?.message ||
-      error?.response?.data?.error ||
-      error?.message ||
+      (responseData && typeof responseData === "object"
+        ? responseData.message || responseData.error
+        : undefined) ||
+      axiosError?.message ||
       "Something went wrong while solving your question.";
 
     if (status === 404) {
@@ -56,7 +63,7 @@ export default function Page() {
       return "Too many requests. Please wait a moment and try again.";
     }
 
-    return `${backendMessage}`;
+    return backendMessage;
   };
 
   const handleSolve = async (question: string) => {
@@ -67,7 +74,7 @@ export default function Page() {
     try {
       const { data } = await apiClient.post("/solve-question", { question });
       setAnswer(data.data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error solving question:", error);
       setErrorMessage(getErrorText(error));
     } finally {
